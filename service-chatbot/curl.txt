@@ -1,0 +1,1 @@
+curl --header "Content-Type: application/json" --request POST --data @chat2.json "https://chat.googleapis.com/v1/spaces/AAAAmyEtxvE/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=buBq5m4xvB53bSsempbbVklNYtnOwnwbLfgfmWn0RWc%3D"
