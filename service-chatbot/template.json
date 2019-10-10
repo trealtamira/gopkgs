@@ -1,0 +1,8 @@
+{"cards":[ { "header": { "title": "Cloud Builder" }, "sections": [ { "widgets": [ { "textParagraph": { "text": "<b>Roses</b> are <font color=\"#ff0000\">red</font>,<br><i>Violets</i> are <font color=\"#0000ff\">blue</font>" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

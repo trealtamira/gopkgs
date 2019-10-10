@@ -1,0 +1,19 @@
+{
+  "cards": [
+    {
+      "Sections": [
+        {
+          "widgets": {
+            "keyValue": {
+              "topLabel": "ProjectId",
+              "content": "tremaps4"
+            }
+          }
+        }
+      ],
+      "header": {
+        "title": "Build Completed"
+      }
+    }
+  ]
+}
