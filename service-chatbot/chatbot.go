@@ -213,7 +213,7 @@ func buildChat(c BuildData) (string, error) {
 }
 
 func sendChatJSON(message string) error {
-	webhook := os.Getenv("CHATBOT_URL")
+	webhook := os.Getenv("WEBHOOK")
 	resp, err := http.Post(webhook, "application/json", strings.NewReader(message))
 	if err != nil {
 		log.Printf("post failed: %v\n\n", err)
