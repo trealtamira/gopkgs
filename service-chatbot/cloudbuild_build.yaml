@@ -1,4 +1,4 @@
 steps:
   # Build Docker image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=gcr.io/$PROJECT_ID/chatbot', '.']
+  args: ['build', '--tag=gcr.io/$PROJECT_ID/chatbot', './service-chatbot']
