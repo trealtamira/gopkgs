@@ -21,7 +21,9 @@ RUN apk add --no-cache ca-certificates
 COPY --from=builder /go/src/github.com/trealtamira/gopkg/service-chatbot/chatbot /chatbot
 
 # Set WEBHOOK URL as an environmental variable
+ARG WEBHOOK
 ENV WEBHOOK ${WEBHOOK}
+RUN echo WebHook: $WEBHOOK
 
 # Run the web service on container startup.
 CMD ["/chatbot"]
