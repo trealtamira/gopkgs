@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"testing"
 )
 
@@ -10,6 +11,20 @@ func TestReadMessage(t *testing.T) {
 	//msg = "{\"id\":\"947c90a5-bfdb-4377-9573-1bf48d59046a\"}"
 
 	chat, _ := readMessage(msg)
+	fmt.Printf("LogUrl: %v\n", chat.LogURL)
+	fmt.Printf("Project: %v\n", chat.ProjectId)
+	fmt.Printf("Status: %v\n", chat.Status)
+	fmt.Printf("Branch: %v\n", chat.Branch)
+	fmt.Printf("ProjectID: %v\n", chat.Project)
+	fmt.Printf("Repo: %v\n", chat.Repo)
+}
+
+func TestReadMessageFromFile(t *testing.T) {
+	msg, err := ioutil.ReadFile("msg_1.txt")
+	if err != nil {
+		t.Errorf("cannot read file: %v", err)
+	}
+	chat, _ := readMessage(string(msg))
 	fmt.Printf("LogUrl: %v\n", chat.LogURL)
 	fmt.Printf("Project: %v\n", chat.ProjectId)
 	fmt.Printf("Status: %v\n", chat.Status)

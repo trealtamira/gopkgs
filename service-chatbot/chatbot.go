@@ -89,14 +89,28 @@ func readMessage(data string) (BuildData, error) {
 			chat.FinishTime = v.(string)
 			break
 		case "source":
-			source := v.(map[string]interface{})
-			repo := source["repoSource"].(map[string]interface{})
-			if repo != nil {
-				chat.Branch = repo["branchName"].(string)
-				chat.Repo = repo["repoName"].(string)
-				chat.Project = repo["projectId"].(string)
+			if v != nil {
+				source := v.(map[string]interface{})
+				switch {
+				case source["repoSource"]:
+					repo := source["repoSource"].(map[string]interface{})
+					if repo != nil {
+						chat.Branch = repo["branchName"].(string)
+						chat.Repo = repo["repoName"].(string)
+						chat.Project = repo["projectId"].(string)
+					}
+					break
+				case source["storageSource"]:
+					repo := source["storageSource"].(map[string]interface{})
+					if repo != nil {
+						chat.Repo = repo["bucket"].(string)
+						chat.Project = repo["object"].(string)
+					}
+					break
+
+				}
+				break
 			}
-			break
 		}
 	}
 	return chat, nil
