@@ -28,6 +28,13 @@ type PointG struct {
 	Lon float64
 }
 
+//Tile reresent a tile in ZoomLevel
+type Tile struct {
+	X int
+	Y int
+	Z int
+}
+
 //ExtentM represent a squared extent in mercator coordinates
 type ExtentM struct {
 	NE PointM
