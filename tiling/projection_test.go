@@ -1,10 +1,11 @@
 package tiling_test
 
 import (
+	"fmt"
 	"math"
 	"testing"
 
-	"github.com/trealtamira/tiling"
+	"github.com/trealtamira/gopkgs/tiling"
 )
 
 func TestGeoToMerc(t *testing.T) {
@@ -28,8 +29,8 @@ func TestGeoToMerc(t *testing.T) {
 		tiling.PointM{N: 11459741.6377346, E: 2868556.13563973},
 	}
 	for i, p := range geos {
-		t.Run("Testing point "+i, func(t *testing.T) {
-			m := tiling.ToPointM(p)
+		t.Run(fmt.Sprintf("Testing point %d", i), func(t *testing.T) {
+			m := tiling.GeoToMerc(p)
 			difN := math.Abs(m.N - mercs[i].N)
 			difE := math.Abs(m.E - mercs[i].E)
 			if difN > 0.0000001 {
@@ -63,8 +64,8 @@ func TestMercToGeo(t *testing.T) {
 		tiling.PointM{N: 11459741.6377346, E: 2868556.13563973},
 	}
 	for i, p := range mercs {
-		t.Run("Testing point "+i, func(t *testing.T) {
-			g := tiling.ToPointG(p)
+		t.Run(fmt.Sprintf("Testing point %d", i), func(t *testing.T) {
+			g := tiling.MercToGeo(p)
 			difLa := math.Abs(g.Lat - geos[i].Lat)
 			difLo := math.Abs(g.Lon - geos[i].Lon)
 			if difLa > 0.0000001 {
