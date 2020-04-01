@@ -26,14 +26,46 @@ type PointG struct {
 
 //ExtentM represent a squared extent in mercator coordinates
 type ExtentM struct {
-	NE PointM
-	SW PointM
+	North float64
+	South float64
+	East  float64
+	West  float64
+}
+
+// NewExtentM build a merc extent from the given opposite vertex: UL upper left, LR lower right
+func NewExtentM(UL, LR PointM) ExtentM {
+	ex := ExtentM{North: UL.N, South: LR.N, East: LR.E, West: UL.E}
+	return ex
+}
+
+func (e ExtentM) UL() PointM {
+	return PointM{N: e.North, E: e.West}
+}
+
+func (e ExtentM) LR() PointM {
+	return PointM{N: e.South, E: e.East}
 }
 
 //ExtentG represent a squared extent in geographic coordinates
 type ExtentG struct {
-	NE PointG
-	SW PointG
+	MinLat float64
+	MinLon float64
+	MaxLat float64
+	MaxLon float64
+}
+
+// NewExtentG build a geo extent from the given opposite vertex: UL upper left, LR lower right
+func NewExtentG(UL, LR PointG) ExtentG {
+	ex := ExtentG{MaxLat: UL.Lat, MinLat: LR.Lat, MaxLon: LR.Lon, MinLon: UL.Lon}
+	return ex
+}
+
+func (e ExtentG) UL() PointG {
+	return PointG{Lat: e.MaxLat, Lon: e.MinLon}
+}
+
+func (e ExtentG) LR() PointG {
+	return PointG{Lat: e.MinLat, Lon: e.MaxLon}
 }
 
 //GeoToMerc convert the given geo point to mercator
@@ -56,8 +88,29 @@ func MercToGeo(m PointM) PointG {
 
 //ToGeoExtent convert the given mercator extent to geo
 func MercToGeoExt(me ExtentM) ExtentG {
-	geoNE := MercToGeo(me.NE)
-	geoSW := MercToGeo(me.SW)
-	geoEx := ExtentG{NE: geoNE, SW: geoSW}
+	geoUL := MercToGeo(me.UL())
+	geoLR := MercToGeo(me.LR())
+	geoEx := NewExtentG(geoUL, geoLR)
 	return geoEx
+}
+
+func Intersection(ext1, ext2 ExtentM) ExtentM {
+	intersection := Extent{}
+	intersection.MinX = math.Max(ext1.MinX, ext2.MinX)
+	intersection.MaxX = math.Min(ext1.MaxX, ext2.MaxX)
+	intersection.MinY = math.Max(ext1.MinY, ext2.MinY)
+	intersection.MaxY = math.Min(ext1.MaxY, ext2.MaxY)
+	ok, replacement := isConsistent(intersection)
+	if !ok {
+		return replacement
+	}
+	return intersection
+}
+
+func isConsistent(ext Extent) (bool, Extent) {
+	if ext.MinX >= ext.MaxX || ext.MinY >= ext.MaxY {
+		return false, Extent{MinX: 0, MinY: 0, MaxX: 0, MaxY: 0}
+	}
+	return true, ext
+
 }
