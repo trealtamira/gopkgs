@@ -10,10 +10,6 @@ const (
 	meridian           = wgs84SphericalAxis * math.Pi
 	rad2deg            = 180 / math.Pi
 	deg2rad            = math.Pi / 180
-	maxLon             = 179.999999
-	minLon             = -179.999999
-	maxLat             = 85.0511
-	minLat             = -85.0511
 )
 
 //PointM is a point in projected WebMercator coordinates (EPSG:3857) https://en.wikipedia.org/wiki/Web_Mercator_projection#Identifiers
@@ -26,13 +22,6 @@ type PointM struct {
 type PointG struct {
 	Lat float64
 	Lon float64
-}
-
-//Tile reresent a tile in ZoomLevel
-type Tile struct {
-	X int
-	Y int
-	Z int
 }
 
 //ExtentM represent a squared extent in mercator coordinates
