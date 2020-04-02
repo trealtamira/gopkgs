@@ -65,9 +65,9 @@ func (z *ZoomLevel) ExtentOfTile(x, y int) ExtentM {
 	maxEast := (float64(x+1) * z.hLength) - (equator / 2)
 	maxNorth := meridian - (float64(y) * z.vLength)
 	minNorth := meridian - (float64(y+1) * z.vLength)
-	ne := PointM{N: maxNorth, E: maxEast}
-	sw := PointM{N: minNorth, E: minEast}
-	me := ExtentM{NE: ne, SW: sw}
+	ul := PointM{N: maxNorth, E: minEast}
+	lr := PointM{N: minNorth, E: maxEast}
+	me := NewExtentM(ul, lr)
 	return me
 }
 

@@ -86,7 +86,7 @@ func MercToGeo(m PointM) PointG {
 	return p
 }
 
-//ToGeoExtent convert the given mercator extent to geo
+//MercToGeoExt convert the given mercator extent to geo
 func MercToGeoExt(me ExtentM) ExtentG {
 	geoUL := MercToGeo(me.UL())
 	geoLR := MercToGeo(me.LR())
@@ -94,23 +94,30 @@ func MercToGeoExt(me ExtentM) ExtentG {
 	return geoEx
 }
 
-func Intersection(ext1, ext2 ExtentM) ExtentM {
-	intersection := Extent{}
-	intersection.MinX = math.Max(ext1.MinX, ext2.MinX)
-	intersection.MaxX = math.Min(ext1.MaxX, ext2.MaxX)
-	intersection.MinY = math.Max(ext1.MinY, ext2.MinY)
-	intersection.MaxY = math.Min(ext1.MaxY, ext2.MaxY)
-	ok, replacement := isConsistent(intersection)
-	if !ok {
-		return replacement
+//Intersection compute the intersection between two extent and false if it is empty
+func Intersection(ext1, ext2 ExtentM) (ExtentM, bool) {
+	ix := ExtentM{}
+	ix.West = math.Max(ext1.West, ext2.West)
+	ix.East = math.Min(ext1.East, ext2.East)
+	ix.South = math.Max(ext1.South, ext2.South)
+	ix.North = math.Min(ext1.North, ext2.North)
+	if ix.West >= ix.East || ix.South >= ix.North {
+		return ExtentM{West: 0, South: 0, East: 0, North: 0}, false
 	}
-	return intersection
+	return ix, true
 }
 
-func isConsistent(ext Extent) (bool, Extent) {
-	if ext.MinX >= ext.MaxX || ext.MinY >= ext.MaxY {
-		return false, Extent{MinX: 0, MinY: 0, MaxX: 0, MaxY: 0}
+//Equals returns false if not equals
+func Equals(ext1, ext2 ExtentM) bool {
+	if ext1.North != ext2.North {
+		return false
+	} else if ext1.South != ext2.South {
+		return false
+	} else if ext1.East != ext2.East {
+		return false
+	} else if ext1.West != ext2.West {
+		return false
+	} else {
+		return true
 	}
-	return true, ext
-
 }

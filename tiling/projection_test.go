@@ -77,3 +77,69 @@ func TestMercToGeo(t *testing.T) {
 		})
 	}
 }
+
+func TestIntersection(t *testing.T) {
+	exts := make(map[string]tiling.ExtentM)
+	exts["ext1"] = tiling.ExtentM{West: 0, East: 60, South: 0, North: 60}
+	exts["ext2"] = tiling.ExtentM{West: 60, East: 120, South: 0, North: 60}
+	exts["ext3"] = tiling.ExtentM{West: 0, East: 60, South: -60, North: 0}
+	exts["ext4"] = tiling.ExtentM{West: 60, East: 120, South: -60, North: 0}
+	exts["extA"] = tiling.ExtentM{West: 70, East: 110, South: 20, North: 40}
+	exts["extB"] = tiling.ExtentM{West: 20, East: 40, South: -20, North: 20}
+	exts["extC"] = tiling.ExtentM{West: 50, East: 90, South: -50, North: -30}
+	exts["in1B"] = tiling.ExtentM{West: 20, East: 40, South: 0, North: 20}
+	exts["in3B"] = tiling.ExtentM{West: 20, East: 40, South: -20, North: 0}
+	exts["in2A"] = tiling.ExtentM{West: 70, East: 110, South: 20, North: 40}
+	exts["in3C"] = tiling.ExtentM{West: 50, East: 60, South: -50, North: -30}
+	exts["in4C"] = tiling.ExtentM{West: 60, East: 90, South: -50, North: -30}
+	tests := [][]string{
+		{"ext1", "extB", "in1B"},
+		{"ext3", "extB", "in3B"},
+		{"ext2", "extA", "in2A"},
+		{"ext3", "extC", "in3C"},
+		{"ext4", "extC", "in4C"},
+	}
+	for _, e := range tests {
+		t.Run(fmt.Sprintf("Intersecting %s with %s", e[0], e[1]), func(t *testing.T) {
+			xs, _ := tiling.Intersection(exts[e[0]], exts[e[1]])
+			xr, _ := tiling.Intersection(exts[e[1]], exts[e[0]])
+			if !tiling.Equals(xs, exts[e[2]]) {
+				t.Errorf("Intersection is not the expected")
+			}
+			if !tiling.Equals(xr, exts[e[2]]) {
+				t.Errorf("Intersection reverse is not the expected")
+			}
+		})
+	}
+}
+
+func TestIntersectionEmpty(t *testing.T) {
+	exts := make(map[string]tiling.ExtentM)
+	exts["ext1"] = tiling.ExtentM{West: 0, East: 60, South: 0, North: 60}
+	exts["ext2"] = tiling.ExtentM{West: 60, East: 120, South: 0, North: 60}
+	exts["ext3"] = tiling.ExtentM{West: 0, East: 60, South: -60, North: 0}
+	exts["ext4"] = tiling.ExtentM{West: 60, East: 120, South: -60, North: 0}
+	exts["extA"] = tiling.ExtentM{West: 70, East: 110, South: 20, North: 40}
+	exts["extB"] = tiling.ExtentM{West: 20, East: 40, South: -20, North: 20}
+	exts["extC"] = tiling.ExtentM{West: 50, East: 90, South: -50, North: -30}
+	tests := [][]string{
+		{"ext1", "extA"},
+		{"ext3", "extA"},
+		{"ext1", "extC"},
+		{"ext4", "extB"},
+		{"ext2", "extB"},
+		{"ext2", "extC"},
+	}
+	for _, e := range tests {
+		t.Run(fmt.Sprintf("Intersecting %s with %s", e[0], e[1]), func(t *testing.T) {
+			xs, oks := tiling.Intersection(exts[e[0]], exts[e[1]])
+			xr, okr := tiling.Intersection(exts[e[1]], exts[e[0]])
+			if oks {
+				t.Errorf("Intersection %+v should be empty", xs)
+			}
+			if okr {
+				t.Errorf("Intersection %+v should be empty", xr)
+			}
+		})
+	}
+}

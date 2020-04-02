@@ -44,32 +44,28 @@ func TestExtentOf(t *testing.T) {
 	}
 	exts := []tiling.ExtentM{
 		tiling.ExtentM{
-			SW: tiling.PointM{E: 626172.1357121654, N: 5009377.085697312},
-			NE: tiling.PointM{E: 1252344.271424327, N: 5635549.221409474},
+			West: 626172.1357121654, South: 5009377.085697312, East: 1252344.271424327, North: 5635549.221409474,
 		},
 		tiling.ExtentM{
-			SW: tiling.PointM{E: -7514065.628545966, N: -2504688.542848654},
-			NE: tiling.PointM{E: -5009377.085697312, N: 0},
+			West: -7514065.628545966, South: -2504688.542848654, East: -5009377.085697312, North: 0,
 		},
 		tiling.ExtentM{
-			SW: tiling.PointM{E: -20037508.342789244, N: -20037508.342789244},
-			NE: tiling.PointM{E: 20037508.342789244, N: 20037508.342789244},
+			West: -20037508.342789244, South: -20037508.342789244, East: 20037508.342789244, North: 20037508.342789244,
 		},
 		tiling.ExtentM{
-			SW: tiling.PointM{E: 12665309.838740565, N: -3025989.0757535584},
-			NE: tiling.PointM{E: 12665615.586853705, N: -3025683.327640418},
+			West: 12665309.838740565, South: -3025989.0757535584, East: 12665615.586853705, North: -3025683.327640418,
 		},
 	}
 	for i, e := range tiles {
 		t.Run(fmt.Sprintf("Tile %d (X,Y,Z)(%d, %d, %d)", i, e.X, e.Y, e.Z), func(t *testing.T) {
 			ext := tiling.ExtentOf(e)
-			difS := math.Abs(ext.SW.N - exts[i].SW.N)
-			difN := math.Abs(ext.NE.N - exts[i].NE.N)
-			difE := math.Abs(ext.NE.E - exts[i].NE.E)
-			difW := math.Abs(ext.SW.E - exts[i].SW.E)
+			difS := math.Abs(ext.South - exts[i].South)
+			difN := math.Abs(ext.North - exts[i].North)
+			difE := math.Abs(ext.East - exts[i].East)
+			difW := math.Abs(ext.West - exts[i].West)
 			const lim = 0.0000001
 			if difS > lim || difN > lim || difW > lim || difE > lim {
-				t.Errorf("Extent is different (expected, actual) %v != %v", ext, exts[i])
+				t.Errorf("Extent is different (expected, actual) %+v != %+v", ext, exts[i])
 			}
 		})
 	}
