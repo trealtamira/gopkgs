@@ -5,7 +5,10 @@ import (
 	"math"
 )
 
+// EPSG is the current code of the Reference System used in web mapping
 const EPSG = "3857"
+
+// EPSG_OLD is the deprecated code of the Reference System used in web mapping
 const EPSG_OLD = "3587"
 
 const (
