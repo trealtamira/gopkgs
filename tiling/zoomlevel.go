@@ -5,6 +5,9 @@ import (
 	"math"
 )
 
+const EPSG = "3857"
+const EPSG_OLD = "3587"
+
 const (
 	tileMaxLon = 179.999999
 	tileMinLon = -179.999999
