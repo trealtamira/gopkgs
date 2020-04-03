@@ -70,3 +70,35 @@ func TestExtentOf(t *testing.T) {
 		})
 	}
 }
+
+func TestRangeOf(t *testing.T) {
+	exts := []tiling.ExtentM{
+		tiling.ExtentM{
+			West: 626173, South: 5009378, East: 1252343, North: 5635548,
+		},
+		tiling.ExtentM{
+			West: -7514065.62854596, South: -2504688.54284865, East: -7514065.62854596, North: -2504688.54284865,
+		},
+		tiling.ExtentM{
+			West: -20037508.342789244, South: -20037508.34278924, East: 20037508.34278924, North: 20037508.342789244,
+		},
+		tiling.ExtentM{
+			West: -12665309.838740565, South: -3025989.0757535584, East: 12665615.586853705, North: 3025683.327640418,
+		},
+	}
+	ranges := []tiling.Range{
+		tiling.Range{MinX: 33, MaxX: 33, MinY: 23, MaxY: 23, ZL: 6},
+		tiling.Range{MinX: 5, MaxX: 5, MinY: 8, MaxY: 8, ZL: 4},
+		tiling.Range{MinX: 0, MaxX: 0, MinY: 0, MaxY: 0, ZL: 0},
+		tiling.Range{MinX: 24112, MaxX: 106961, MinY: 55639, MaxY: 75433, ZL: 17},
+	}
+	for i, e := range exts {
+		t.Run(fmt.Sprintf("Extent %d %+v", i, e), func(t *testing.T) {
+			zl := tiling.NewZoomLevel(ranges[i].ZL)
+			r := zl.RangeOf(e)
+			if r.ZL != ranges[i].ZL || r.MinX != ranges[i].MinX || r.MaxX != ranges[i].MaxX || r.MinY != ranges[i].MinY || r.MaxY != ranges[i].MaxY {
+				t.Errorf("Range is different (expected, actual) %+v != %+v", ranges[i], r)
+			}
+		})
+	}
+}

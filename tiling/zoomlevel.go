@@ -35,6 +35,7 @@ type Range struct {
 	MaxX int
 	MinY int
 	MaxY int
+	ZL   int
 }
 
 //ZoomLevel represent a single zoom level of the tile map pyramidal system
@@ -69,7 +70,7 @@ func (z *ZoomLevel) TileOfMerc(m PointM) Tile {
 
 //TileOfGeo gives the tile coordinates for the given point for the current zoom level
 func (z *ZoomLevel) TileOfGeo(g PointG) (Tile, error) {
-	if g.Lon < tileMinLon || g.Lon > tileMaxLon || g.Lat < tileMinLat || g.Lat > tileMaxLat {
+	if g.Lon <= tileMinLon || g.Lon >= tileMaxLon || g.Lat <= tileMinLat || g.Lat >= tileMaxLat {
 		return Tile{}, fmt.Errorf("Point out of tiling limits: (lat, lon)(%f, %f)", g.Lat, g.Lon)
 	}
 	m := GeoToMerc(g)
@@ -94,7 +95,7 @@ func (z *ZoomLevel) ExtentOfTile(x, y int) ExtentM {
 func (z *ZoomLevel) RangeOf(ext ExtentM) Range {
 	tileUL := z.TileOfMerc(ext.UL())
 	tileLR := z.TileOfMerc(ext.LR())
-	r := Range{MinX: tileUL.X, MinY: tileUL.X, MaxX: tileLR.X, MaxY: tileLR.Y}
+	r := Range{MinX: tileUL.X, MinY: tileUL.Y, MaxX: tileLR.X, MaxY: tileLR.Y, ZL: z.zoom}
 	return r
 }
 
