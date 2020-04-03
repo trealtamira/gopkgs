@@ -6,10 +6,14 @@ import (
 )
 
 // EPSG is the current code of the Reference System used in web mapping
+// https://wiki.openstreetmap.org/wiki/EPSG:3857
 const EPSG = "3857"
 
 // EPSG_OLD is the deprecated code of the Reference System used in web mapping
 const EPSG_OLD = "3587"
+
+// EPSG_OLD_TYPO is the deprecated typo code of the Reference System used in web mapping
+const EPSG_OLD_TYPO = "3785"
 
 const (
 	tileMaxLon = 179.999999
