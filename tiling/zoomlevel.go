@@ -29,6 +29,14 @@ type Tile struct {
 	Z int
 }
 
+//Range describe a tile range
+type Range struct {
+	MinX int
+	MaxX int
+	MinY int
+	MaxY int
+}
+
 //ZoomLevel represent a single zoom level of the tile map pyramidal system
 type ZoomLevel struct {
 	zoom    int
@@ -79,6 +87,15 @@ func (z *ZoomLevel) ExtentOfTile(x, y int) ExtentM {
 	lr := PointM{N: minNorth, E: maxEast}
 	me := NewExtentM(ul, lr)
 	return me
+}
+
+//RangeOf return the tile Range that covers the giveb EPSG:3857 extent
+//https://developers.google.com/maps/documentation/javascript/coordinates
+func (z *ZoomLevel) RangeOf(ext ExtentM) Range {
+	tileUL := z.TileOfMerc(ext.UL())
+	tileLR := z.TileOfMerc(ext.LR())
+	r := Range{MinX: tileUL.X, MinY: tileUL.X, MaxX: tileLR.X, MaxY: tileLR.Y}
+	return r
 }
 
 //ExtentOf return the mercator extent of the given tile (could be slower than ZoomLevel.ExtentOfTile)
