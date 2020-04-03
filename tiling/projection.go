@@ -38,12 +38,24 @@ func NewExtentM(UL, LR PointM) ExtentM {
 	return ex
 }
 
+//UL Upper Left vertex
 func (e ExtentM) UL() PointM {
 	return PointM{N: e.North, E: e.West}
 }
 
+//UR Upper Right vertex
+func (e ExtentM) UR() PointM {
+	return PointM{N: e.North, E: e.East}
+}
+
+//LR Lower Right vertex
 func (e ExtentM) LR() PointM {
 	return PointM{N: e.South, E: e.East}
+}
+
+//LL Lower Left vertex
+func (e ExtentM) LL() PointM {
+	return PointM{N: e.South, E: e.West}
 }
 
 //ExtentG represent a squared extent in geographic coordinates
@@ -60,12 +72,24 @@ func NewExtentG(UL, LR PointG) ExtentG {
 	return ex
 }
 
+//UL Upper Left vertex
 func (e ExtentG) UL() PointG {
 	return PointG{Lat: e.MaxLat, Lon: e.MinLon}
 }
 
+//UR Upper Right vertex
+func (e ExtentG) UR() PointG {
+	return PointG{Lat: e.MaxLat, Lon: e.MaxLon}
+}
+
+//LR Lower Right vertex
 func (e ExtentG) LR() PointG {
 	return PointG{Lat: e.MinLat, Lon: e.MaxLon}
+}
+
+//LL Lower Left vertex
+func (e ExtentG) LL() PointG {
+	return PointG{Lat: e.MinLat, Lon: e.MinLon}
 }
 
 //GeoToMerc convert the given geo point to mercator
