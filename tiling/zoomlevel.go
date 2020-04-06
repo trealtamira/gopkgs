@@ -60,6 +60,11 @@ func (z *ZoomLevel) Cardinality() float64 {
 	return math.Pow(z.mxSize, 2)
 }
 
+//Level returns the zoom level number
+func (z *ZoomLevel) Level() int {
+	return z.zoom
+}
+
 //TileOfMerc gives the tile coordinates for the given point for the current zoom level
 func (z *ZoomLevel) TileOfMerc(m PointM) Tile {
 	x := math.Floor((m.E + (equator / 2)) / z.hLength)
