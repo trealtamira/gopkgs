@@ -56,8 +56,8 @@ func NewZoomLevel(z int) *ZoomLevel {
 }
 
 //Cardinality gives the number of tiles in the zoom level
-func (z *ZoomLevel) Cardinality() float64 {
-	return math.Pow(z.mxSize, 2)
+func (z *ZoomLevel) Cardinality() int64 {
+	return int64(math.Pow(z.mxSize, 2))
 }
 
 //Level returns the zoom level number
