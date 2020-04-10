@@ -102,3 +102,36 @@ func TestRangeOf(t *testing.T) {
 		})
 	}
 }
+
+func TestRangeCardinality(t *testing.T) {
+	exts := []tiling.ExtentM{
+		tiling.ExtentM{
+			West: 626173, South: 5009378, East: 1252343, North: 5635548,
+		},
+		tiling.ExtentM{
+			West: -7514065.62854596, South: -2504688.54284865, East: -7514065.62854596, North: -2504688.54284865,
+		},
+		tiling.ExtentM{
+			West: -20037508.342789244, South: -20037508.34278924, East: 20037508.34278924, North: 20037508.342789244,
+		},
+		tiling.ExtentM{
+			West: -12665309.838740565, South: -3025989.0757535584, East: 12665615.586853705, North: 3025683.327640418,
+		},
+	}
+	ranges := [][]int{
+		{1, 6},
+		{1, 4},
+		{1, 0},
+		{1640015750, 17},
+	}
+	for i, e := range exts {
+		t.Run(fmt.Sprintf("Extent %d %+v", i, e), func(t *testing.T) {
+			zl := tiling.NewZoomLevel(ranges[i][1])
+			r := zl.RangeCardinality(e)
+			if r != ranges[i][0] {
+				t.Errorf("Cardinality of Range is different (expected, actual) %d != %d", ranges[i][0], r)
+			}
+		})
+	}
+
+}

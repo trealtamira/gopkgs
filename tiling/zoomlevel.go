@@ -104,6 +104,14 @@ func (z *ZoomLevel) RangeOf(ext ExtentM) Range {
 	return r
 }
 
+//RangeCardinality return the cardinality of the tile Range that covers the giveb EPSG:3857 extent
+//https://developers.google.com/maps/documentation/javascript/coordinates
+func (z *ZoomLevel) RangeCardinality(ext ExtentM) int {
+	r := z.RangeOf(ext)
+	card := ((r.MaxX - r.MinX) + 1) * ((r.MaxY - r.MinY) + 1)
+	return card
+}
+
 //ExtentOf return the mercator extent of the given tile (could be slower than ZoomLevel.ExtentOfTile)
 func ExtentOf(t Tile) ExtentM {
 	z := NewZoomLevel(t.Z)
