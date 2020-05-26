@@ -81,8 +81,8 @@ func DefaultOpts() Opts {
 		Levels:             []log.Level{log.FatalLevel},
 		Async:              false,
 		Timeout:            5 * time.Second,
-		Project:            os.Getenv("GOOGLE_CLOUD_PROJECT"),
-		Service:            os.Getenv("STACKDRIVER_SERVICE_NAME"),
+		Project:            os.Getenv("ERRORREPORTING_PROJECT"),
+		Service:            os.Getenv("ERRORREPORTING_SERVICE"),
 		UseJoonixFormatter: true,
 	}
 }

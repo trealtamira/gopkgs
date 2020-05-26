@@ -17,8 +17,8 @@ gcplogrus.Setup(gcplogrus.DefaultOpts())
 
 As long as the following ENV variables are set:
 
-* GOOGLE_CLOUD_PROJECT
-* STACKDRIVER_SERVICE_NAME
+* ERRORREPORTING_PROJECT
+* ERRORREPORTING_SERVICE
 
 Complete example:
 
