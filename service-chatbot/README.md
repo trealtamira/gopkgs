@@ -4,15 +4,16 @@
 
 ### Overview
 
-The system is based on multiple Google Project: (A) devel-services and another project that we call (B) production.
-The project devel-services contains the chatbot service (Cloud Run) and the DNS configuration.
+The system is based on multiple Google Project: (A) 'devel-services' and another project that we call (B) 'production'.
+The project (A) 'devel-services' contains the chatbot service (Cloud Run) and the DNS configuration.
+The project (B) 'production' is the project with the business project that contains the build trigger.
 The chatbot service has been mapped via CNAME to chatbot.devtools.tre-altamira.com, its original URL is chatbot-t72fne3txq-ew.a.run.app.
 
 The flow of the entire system is as follow:
-Cloud Build run the build triggered by GitHub events
-Cloud Build Push messages on the "cloud-builds" Pub/Sub topic
-A Pub/Sub subscription push the message to the Chatbot webhook 
-The Goolge Run service behind the webhook read the message and call the Google Chat webhook URL
+Project B: Cloud Build run the build triggered by GitHub events
+Project B: Cloud Build Push messages on the "cloud-builds" Pub/Sub topic
+Project B: a Pub/Sub subscription push the message to the Chatbot webhook 
+Project A: the Goolge Run service behind the webhook read the message and call the Google Chat webhook URL
 The message is shown on Google Chat room
 
 ### Deployment
@@ -34,7 +35,7 @@ The domain must be registered in the domain section of the project B (https://cl
 3. Enable the Pub/Sub service account of project B to create JWT auth tokens:
 
 > `gcloud config configurations activate production`  
-> `gcloud projects add-iam-policy-binding PROJECT-ID2 --member=serviceAccount:service-PROJECT2-NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com --role=roles/iam.serviceAccountTokenCreator`  
+> `gcloud projects add-iam-policy-binding PROJECT-B-ID --member=serviceAccount:service-PROJECT-B-NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com --role=roles/iam.serviceAccountTokenCreator`  
 
 4. Create in project B a service account that will be the user managing the request to the Pub/Sub subscription endpoint we are going to define:
 
@@ -43,10 +44,10 @@ The domain must be registered in the domain section of the project B (https://cl
 5. Give to the account created in step 4 the ability to run the service deployed in step 2:
 
 > `gcloud config configurations activate devel-services`  
-> `gcloud beta run services add-iam-policy-binding chatbot --member=serviceAccount:chatbot-publisher@PROJECT-ID2.iam.gserviceaccount.com --role=roles/run.invoker`  
+> `gcloud beta run services add-iam-policy-binding chatbot --member=serviceAccount:chatbot-publisher@PROJECT-B-ID.iam.gserviceaccount.com --role=roles/run.invoker`  
 
 6. Create a subscription in project B that calls the Cloud Run service of step 2 sending the Pub/Sub message:
 
-> `gcloud beta pubsub subscriptions create chatbotSubscription --topic projects/PROJECT-ID2/topics/cloud-builds --push-endpoint=https://chatbot.<your own domain> --push-auth-service-account=chatbot-publisher@PROJECT-ID2.iam.gserviceaccount.com`  
+> `gcloud beta pubsub subscriptions create chatbotSubscription --topic projects/PROJECT-B-ID/topics/cloud-builds --push-endpoint=https://chatbot.<your own domain> --push-auth-service-account=chatbot-publisher@PROJECT-B-ID.iam.gserviceaccount.com`  
 
 Done!
