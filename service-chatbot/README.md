@@ -10,13 +10,10 @@ The project (OTH) 'other' is the project with the business project that contains
 
 The flow of the entire system is as follow:
 
-Project OTH: Cloud Build run the build triggered by GitHub events
-
-Project OTH: Cloud Build Push messages on the "cloud-builds" Pub/Sub topic
-
-Project SER: a Pub/Sub subscription push the message to the Chatbot webhook 
-
-Project SER: the Goolge Run service behind the webhook read the message and call the Google Chat webhook URL
+Project OTH: Cloud Build run the build triggered by GitHub events  
+Project OTH: Cloud Build Push messages on the "cloud-builds" Pub/Sub topic  
+Project OTH: a Pub/Sub subscription push the message to the Chatbot webhook of project SER  
+Project SER: the Goolge Run service behind the webhook read the message and call the Google Chat webhook URL  
 
 The message is shown on Google Chat room
 
